@@ -1,5 +1,7 @@
 # URL Shortener
 
+![image](https://github.com/user-attachments/assets/93861d75-3d11-41e8-b01b-e71497924003)
+
 ## Description
 
 URL Shortener is a robust web application built with Flask that allows users to create shortened versions of long URLs. It provides both a user-friendly web interface and a RESTful API for URL shortening and management. This tool is perfect for sharing links on platforms with character limitations or for tracking click statistics on shared URLs.
