@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+
+{% block title %}URL Details - {{ url.short_code }}{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <h1 class="text-center mb-4">URL Details</h1>
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Shortened URL</h5>
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control" value="{{ short_url }}" id="shortUrl" readonly>
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-secondary" type="button" onclick="copyToClipboard()">Copy</button>
+                    </div>
+                </div>
+                <p class="card-text">
+                    <strong>Original URL:</strong> 
+                    <a href="{{ url.original_url }}" target="_blank">{{ url.original_url | truncate(50) }}</a>
+                </p>
+                <p class="card-text"><strong>Created on:</strong> {{ url.created_at.strftime('%Y-%m-%d %H:%M:%S') }}</p>
+                <p class="card-text"><strong>Total Clicks:</strong> {{ url.clicks }}</p>
+            </div>
+        </div>
+
+        {% if click_data %}
+        <div class="card mt-4">
+            <div class="card-body">
+                <h5 class="card-title">Click Statistics</h5>
+                <canvas id="clickChart"></canvas>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    function copyToClipboard() {
+        var copyText = document.getElementById("shortUrl");
+        copyText.select();
+        copyText.setSelectionRange(0, 99999);
+        document.execCommand("copy");
+        alert("Copied the URL: " + copyText.value);
+    }
+
+    {% if click_data %}
+    document.addEventListener('DOMContentLoaded', function() {
+        var ctx = document.getElementById('clickChart').getContext('2d');
+        var chart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: {{ click_data.labels | tojson }},
+                datasets: [{
+                    label: 'Clicks',
+                    data: {{ click_data.values | tojson }},
+                    borderColor: 'rgb(75, 192, 192)',
+                    tension: 0.1
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Number of Clicks'
+                        }
+                    },
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Date'
+                        }
+                    }
+                }
+            }
+        });
+    });
+    {% endif %}
+</script>
+{% endblock %}

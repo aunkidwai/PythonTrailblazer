@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+
+{% block title %}URL Shortener - Shorten Your Links{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <h1 class="text-center mb-4">URL Shortener</h1>
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Shorten a URL</h5>
+                <form method="POST" action="{{ url_for('main.index') }}">
+                    {{ form.hidden_tag() }}
+                    <div class="form-group">
+                        {{ form.url.label(class="form-label") }}
+                        {{ form.url(class="form-control" + (" is-invalid" if form.url.errors else "")) }}
+                        {% for error in form.url.errors %}
+                            <div class="invalid-feedback">
+                                {{ error }}
+                            </div>
+                        {% endfor %}
+                    </div>
+                    {{ form.submit(class="btn btn-primary") }}
+                </form>
+            </div>
+        </div>
+
+        {% if urls %}
+        <div class="mt-5">
+            <h2>Recent URLs</h2>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Original URL</th>
+                        <th>Short URL</th>
+                        <th>Clicks</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for url in urls %}
+                    <tr>
+                        <td>{{ url.original_url | truncate(50) }}</td>
+                        <td>
+                            <a href="{{ url_for('main.short_url', short_code=url.short_code) }}">
+                                {{ url_for('main.short_url', short_code=url.short_code, _external=True) }}
+                            </a>
+                        </td>
+                        <td>{{ url.clicks }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Add any page-specific JavaScript here
+    document.addEventListener('DOMContentLoaded', function() {
+        // Example: Auto-select the shortened URL when clicked
+        const shortUrls = document.querySelectorAll('td a');
+        shortUrls.forEach(url => {
+            url.addEventListener('click', function(e) {
+                e.preventDefault();
+                navigator.clipboard.writeText(this.href).then(() => {
+                    alert('Short URL copied to clipboard!');
+                });
+            });
+        });
+    });
+</script>
+{% endblock %}
