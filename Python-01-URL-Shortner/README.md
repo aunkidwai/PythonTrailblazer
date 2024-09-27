@@ -156,16 +156,3 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## Acknowledgments
-
-- Flask documentation
-- SQLAlchemy documentation
-- Bootstrap documentation
-- Chart.js documentation
-
-## Contact
-
-Your Name - [@yourtwitter](https://twitter.com/yourtwitter) - email@example.com
-
-Project Link: [https://github.com/yourusername/url-shortener](https://github.com/yourusername/url-shortener)
