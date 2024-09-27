@@ -94,6 +94,8 @@ To run the tests:
 python -m unittest discover tests
 ```
 
+![image](https://github.com/user-attachments/assets/dc4e5040-aecc-4288-ac44-e66b26d652e1)
+
 ## API Usage
 
 The URL Shortener provides a RESTful API for programmatic access:
